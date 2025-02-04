@@ -15,8 +15,12 @@ const app = express();
 // CORS setup for both API routes and Socket.IO (allow requests from both localhost and production URLs)
 const corsOptions = {
   origin: [
-    "http://localhost:3000",  // Local development URL
-    "https://invitelinkfrontend-4yz18tjg1-yagnasree128-ballanis-projects.vercel.app" ,"https://invitelinkfrontend.vercel.app","*" // Production URL
+    "http://localhost:3000", 
+    "http://localhost:3001", 
+    "http://localhost:3002",// Local development URL
+    "https://invitelinkfrontend-4yz18tjg1-yagnasree128-ballanis-projects.vercel.app",
+    "https://invitelinkfrontend.vercel.app",
+    "*" // Production URL
   ],
   methods: ["GET", "POST"],
   credentials: true, // Allow cookies and authorization headers
@@ -89,7 +93,10 @@ const io = new Server(server, {
   cors: {
     origin: [
       "http://localhost:3000",  // Local development URL
-      "https://invitelinkfrontend-4yz18tjg1-yagnasree128-ballanis-projects.vercel.app" ,"https://invitelinkfrontend.vercel.app", "*" // Production URL
+      "http://localhost:3001",
+      "http://localhost:3002",
+      "https://invitelinkfrontend-4yz18tjg1-yagnasree128-ballanis-projects.vercel.app",
+       "https://invitelinkfrontend.vercel.app", "*" // Production URL
     ],
     methods: ["GET", "POST"],
     credentials: true, // Allow credentials like cookies
