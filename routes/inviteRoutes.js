@@ -3,6 +3,11 @@ const router = express.Router();
 const crypto = require("crypto"); // To generate a unique invite code
 const Invite = require("../models/inviteModels"); // Import the Invite model
 
+// Get the base URL dynamically (for local or production)
+const BASE_URL = process.env.NODE_ENV === "production" 
+  ? "https://invitelinkfrontend.vercel.app"  // Replace with your production URL
+  : "http://localhost:3000"; // Local development URL
+
 // Endpoint to generate an invite link
 router.post("/generate-invite", async (req, res) => {
   try {
@@ -14,7 +19,7 @@ router.post("/generate-invite", async (req, res) => {
 
     // Generate a unique invite code
     const inviteCode = crypto.randomBytes(16).toString("hex");
-    const inviteLink = `http://localhost:5000/invite/${inviteCode}`;
+    const inviteLink = `${BASE_URL}/invite/${inviteCode}`;
 
     // Store in MongoDB
     const newInvite = new Invite({ chatId, inviteCode });
@@ -31,6 +36,7 @@ router.post("/generate-invite", async (req, res) => {
   }
 });
 
+// Redirect based on invite code
 router.get("/:inviteCode", async (req, res) => {
   const { inviteCode } = req.params;
 
@@ -39,10 +45,18 @@ router.get("/:inviteCode", async (req, res) => {
     return res.status(400).json({ error: "Invalid invite code" });
   }
 
-  // Redirect to the chat page instead of sending JSON
-  res.redirect(`http://localhost:3000/chat/${inviteCode}`);
+  // Check invite code in DB to make sure it's valid
+  const invite = await Invite.findOne({ inviteCode });
+
+  if (!invite) {
+    return res.status(400).json({ error: "Invalid invite code" });
+  }
+
+  // Redirect to the chat page (replace with your front-end URL)
+  res.redirect(`${BASE_URL}/chat/${inviteCode}`);
 });
-// Generate an invite link
+
+// Generate an invite link (alternative method if needed)
 router.post("/create", async (req, res) => {
   const { createdBy } = req.body;
   const inviteToken = uuidv4(); // Generate a unique token
@@ -50,10 +64,10 @@ router.post("/create", async (req, res) => {
   const newInvite = new Invite({ inviteToken, createdBy });
   await newInvite.save();
 
-  res.json({ inviteLink: `https://yourchatapp.vercel.app/invite/${inviteToken}` });
+  res.json({ inviteLink: `${BASE_URL}/invite/${inviteToken}` });
 });
 
-// Validate Invite Token
+// Validate Invite Token (alternative method if needed)
 router.get("/:token", async (req, res) => {
   const { token } = req.params;
   const invite = await Invite.findOne({ inviteToken: token });
@@ -62,8 +76,5 @@ router.get("/:token", async (req, res) => {
 
   res.json({ valid: true });
 });
-
-
-
 
 module.exports = router;
