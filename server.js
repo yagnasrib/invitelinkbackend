@@ -86,11 +86,15 @@ const server = app.listen(process.env.PORT, () => {
 // Initialize Socket.IO with CORS settings for both frontend origins
 const io = new Server(server, {
   cors: {
-    origin: ["http://localhost:3000","https://invitelinkfrontend-4yz18tjg1-yagnasree128-ballanis-projects.vercel.app"], // Allow both frontend URLs
+    origin: [
+      "http://localhost:3000",  // Local development URL
+      "https://invitelinkfrontend-4yz18tjg1-yagnasree128-ballanis-projects.vercel.app",  // Production URL
+    ],
     methods: ["GET", "POST"],
     credentials: true, // Allow credentials like cookies
   },
 });
+
 
 // Make io globally accessible
 global.io = io;
