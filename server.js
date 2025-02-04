@@ -65,7 +65,7 @@ app.post("/api/invites/generate-invite", async (req, res) => {
     await newInvite.save()
 
     // Generate invite link
-    const inviteLink = `https://invitelinkfrontend-4yz18tjg1-yagnasree128-ballanis-projects.vercel.app/${inviteCode}`
+    const inviteLink =  `https://invitelinkfrontend-4yz18tjg1-yagnasree128-ballanis-projects.vercel.app/${inviteCode}`
 
     // Emit socket event
     io.emit("new-invite", { chatId, inviteLink })
@@ -86,7 +86,7 @@ const server = app.listen(process.env.PORT, () => {
 // Initialize Socket.IO with CORS settings for both frontend origins
 const io = new Server(server, {
   cors: {
-    origin: ["https://invitelinkfrontend-4yz18tjg1-yagnasree128-ballanis-projects.vercel.app"], // Allow both frontend URLs
+    origin: ["http://localhost:3000","https://invitelinkfrontend-4yz18tjg1-yagnasree128-ballanis-projects.vercel.app"], // Allow both frontend URLs
     methods: ["GET", "POST"],
     credentials: true, // Allow credentials like cookies
   },
