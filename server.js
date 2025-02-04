@@ -15,7 +15,7 @@ const app = express();
 
 // CORS setup for API routes (this will allow requests from both localhost:3000 and localhost:3002)
 const corsOptions = {
-  origin: ["http://localhost:3000", "http://localhost:3002"],  // Add both frontend URLs
+  origin: ["https://invitelinkfrontend-4yz18tjg1-yagnasree128-ballanis-projects.vercel.app"],  // Add both frontend URLs
   methods: ["GET", "POST"],
   credentials: true, // Allow cookies and authorization headers
 };
@@ -65,7 +65,7 @@ app.post("/api/invites/generate-invite", async (req, res) => {
     await newInvite.save()
 
     // Generate invite link
-    const inviteLink = `https://invitelinkfrontend.vercel.app/${inviteCode}`
+    const inviteLink = `https://invitelinkfrontend-4yz18tjg1-yagnasree128-ballanis-projects.vercel.app/${inviteCode}`
 
     // Emit socket event
     io.emit("new-invite", { chatId, inviteLink })
@@ -86,7 +86,7 @@ const server = app.listen(process.env.PORT, () => {
 // Initialize Socket.IO with CORS settings for both frontend origins
 const io = new Server(server, {
   cors: {
-    origin: ["http://localhost:3000", "http://localhost:3002"], // Allow both frontend URLs
+    origin: ["https://invitelinkfrontend-4yz18tjg1-yagnasree128-ballanis-projects.vercel.app"], // Allow both frontend URLs
     methods: ["GET", "POST"],
     credentials: true, // Allow credentials like cookies
   },
